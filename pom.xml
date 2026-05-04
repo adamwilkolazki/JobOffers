@@ -12,25 +12,15 @@
         <maven.compiler.source>24</maven.compiler.source>
         <maven.compiler.target>24</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-
-        <junit.version>5.10.2</junit.version>
+        <testcontainers.version>6.0.1</testcontainers.version>
         <assertj.version>3.27.7</assertj.version>
-        <testcontainers.version>1.19.7</testcontainers.version>
-
     </properties>
-
     <dependencies>
         <dependency>
                 <groupId>org.junit.jupiter</groupId>
                 <artifactId>junit-jupiter-api</artifactId>
-                <version>${junit.version}</version>
+                <version>${testcontainers.version}</version>
                 <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.testcontainers</groupId>
-            <artifactId>junit-jupiter</artifactId>
-            <version>${testcontainers.version}</version>
-            <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>org.assertj</groupId>
@@ -38,14 +28,6 @@
             <version>${assertj.version}</version>
             <scope>test</scope>
         </dependency>
-
-        <dependency>
-            <groupId>org.projectlombok</groupId>
-            <artifactId>lombok</artifactId>
-            <version>1.18.40</version>
-            <scope>provided</scope>
-        </dependency>
-
 
     </dependencies>
 
