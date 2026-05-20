@@ -1,0 +1,38 @@
+package com.juniorjavajoboffers.domain.joboffer;
+
+import lombok.RequiredArgsConstructor;
+
+import java.util.List;
+
+@RequiredArgsConstructor
+class JobOfferService {
+
+    private final JobOfferRepository jobOfferRepository;
+    private final JobOfferFetcher jobOfferFetcher;
+
+    List<JobOffer> fetchAllOffersAndSaveAllIfNotExists() {
+        List<JobOffer> jobOffers = fetchAllJobOffers();
+        List<JobOffer> jobOffersWithoutDuplicates = filterNotExistingJobOffers(jobOffers);
+        try {
+            return jobOfferRepository.saveAll(jobOffersWithoutDuplicates);
+        } catch (OfferDuplicateException offerDuplicateException) {
+            throw new RuntimeException();
+        }
+
+    }
+
+    private List<JobOffer> filterNotExistingJobOffers(List<JobOffer> jobOffers) {
+       return jobOffers.stream()
+                .filter(jobOffer -> !jobOffer.offerUrl().isEmpty())
+                .filter(jobOffer-> !jobOfferRepository.existsByUrl(jobOffer.offerUrl()))
+                .toList();
+    }
+
+    private  List<JobOffer>fetchAllJobOffers(){
+        return jobOfferFetcher.fetchJobOffers()
+                .stream()
+                .map(offerDto -> JobOfferMapper.mapFromOfferResponseToJobOffer(offerDto))
+                .toList();
+    }
+
+}
