@@ -13,6 +13,7 @@ import org.springframework.test.context.DynamicPropertyRegistry;
 import org.springframework.test.context.DynamicPropertySource;
 import org.springframework.test.web.servlet.MockMvc;
 import org.testcontainers.junit.jupiter.Container;
+import org.testcontainers.junit.jupiter.Testcontainers;
 import org.testcontainers.mongodb.MongoDBContainer;
 import org.testcontainers.utility.DockerImageName;
 
@@ -21,6 +22,7 @@ import static com.github.tomakehurst.wiremock.core.WireMockConfiguration.wireMoc
 @SpringBootTest(classes = JobOfferSpringBootApplication.class)
 @ActiveProfiles("integration")
 @AutoConfigureMockMvc
+@Testcontainers
 class BaseIntegrationTest {
     private static final String WIRE_MOCK_HOST = "http://localhost";
     @Autowired
@@ -32,7 +34,7 @@ class BaseIntegrationTest {
 
     @Container
     //nazwa obrazu MongoDB z Docker Hub
-    public static final MongoDBContainer mongoDBContrainer = new MongoDBContainer(DockerImageName.parse(""));
+    public static final MongoDBContainer mongoDBContrainer = new MongoDBContainer(DockerImageName.parse("mongo"));
 
     @RegisterExtension //utworzenie serwera na dowolnym porcie w komputerze
     public static WireMockExtension wireMockServer = WireMockExtension.newInstance()
