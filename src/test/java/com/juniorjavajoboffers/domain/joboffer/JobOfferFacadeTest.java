@@ -117,8 +117,8 @@ public class JobOfferFacadeTest {
         assertThat(offerById).isEqualTo(
                 JobOfferResponseDto.builder()
                         .id(savedOffer.id())
-                        .companyName("company1")
-                        .position("position1")
+                        .company("company1")
+                        .title("position1")
                         .salary("salary1")
                         .offerUrl("url1")
                         .build()

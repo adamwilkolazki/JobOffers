@@ -36,8 +36,8 @@ return Optional.of(database.get(jobOfferUrl));
                 .id(id)
                 .offerUrl(entity.offerUrl())
                 .salary(entity.salary())
-                .companyName(entity.companyName())
-                .position(entity.position())
+                .company(entity.company())
+                .title(entity.title())
                 .build();
         database.put(offer.id(), offer);
         return offer;

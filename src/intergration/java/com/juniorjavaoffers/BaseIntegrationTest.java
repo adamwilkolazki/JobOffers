@@ -2,7 +2,7 @@ package com.juniorjavaoffers;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.tomakehurst.wiremock.junit5.WireMockExtension;
-import com.juniorjavajoboffers.domain.JobOfferSpringBootApplication;
+import com.juniorjavajoboffers.JobOfferSpringBootApplication;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.RegisterExtension;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,20 +31,20 @@ public class BaseIntegrationTest {
     ObjectMapper objectMapper;
 
 
-
-    @Container
-    //nazwa obrazu MongoDB z Docker Hub
+    @Container //nazwa obrazu MongoDB z Docker Hub
     public static final MongoDBContainer mongoDBContainer = new MongoDBContainer(DockerImageName.parse("mongo"));
 
     @RegisterExtension //utworzenie serwera na dowolnym porcie w komputerze
     public static WireMockExtension wireMockServer = WireMockExtension.newInstance()
             .options(wireMockConfig().dynamicPort())
             .build();
-    @DynamicPropertySource
-    public static void propertyOverride(DynamicPropertyRegistry registry){
-        registry.add("spring.data.mongodb.uri",mongoDBContainer::getReplicaSetUrl);
-//        registry.add("offer.http.client.config.uri",()->WIRE_MOCK_HOST);
-//        registry.add("offer.http.client.config.port",()->wireMockServer.getPort());
+
+    @DynamicPropertySource //nadpisanie propertisow z pliku application.yml
+
+    public static void propertyOverride(DynamicPropertyRegistry registry) {
+        registry.add("spring.data.mongodb.uri", mongoDBContainer::getReplicaSetUrl);
+        registry.add("offers.fetcher.http.client.config", () -> WIRE_MOCK_HOST);
+        registry.add("offers.fetcher.http.client.port", () -> wireMockServer.getPort());
     }
 
     @Test
