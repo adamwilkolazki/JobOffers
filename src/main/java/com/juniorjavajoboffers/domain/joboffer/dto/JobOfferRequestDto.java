@@ -3,5 +3,5 @@ package com.juniorjavajoboffers.domain.joboffer.dto;
 import lombok.Builder;
 
 @Builder
-public record JobOfferRequestDto(String companyName, String position, String salary, String offerUrl) {
+public record JobOfferRequestDto(String company, String title, String salary, String offerUrl) {
 }
