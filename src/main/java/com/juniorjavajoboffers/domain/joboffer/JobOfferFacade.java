@@ -4,10 +4,12 @@ import com.juniorjavajoboffers.domain.joboffer.dto.JobOfferRequestDto;
 import com.juniorjavajoboffers.domain.joboffer.dto.JobOfferResponseDto;
 
 import lombok.AllArgsConstructor;
+import org.springframework.stereotype.Component;
 
 import java.util.List;
 
 @AllArgsConstructor
+
 public class JobOfferFacade {
 
     private final JobOfferRepository offerRepository;

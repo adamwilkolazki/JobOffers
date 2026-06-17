@@ -1,0 +1,8 @@
+offers:
+  fetcher:
+    scheduler:
+      delay: "* * * * * *"
+
+
+scheduler:
+  enabled: false

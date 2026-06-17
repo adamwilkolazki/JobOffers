@@ -1,10 +1,12 @@
 package com.juniorjavajoboffers.domain.joboffer;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @RequiredArgsConstructor
+
 class JobOfferService {
 
     private final JobOfferRepository jobOfferRepository;
