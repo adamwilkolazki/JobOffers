@@ -11,3 +11,9 @@ offers:
         port: 5057
         connectionTimeout: 3000
         responseTimeout: 5
+    scheduler:
+      delay: "0 0 */3 * * *"
+
+
+scheduling:
+  enabled: true

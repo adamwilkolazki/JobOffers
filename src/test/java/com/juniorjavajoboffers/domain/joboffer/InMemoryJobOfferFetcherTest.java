@@ -5,7 +5,7 @@ import com.juniorjavajoboffers.domain.joboffer.dto.OfferResponseDto;
 
 import java.util.List;
 
-public class InMemoryJobOfferFetcherTest implements JobOfferFetcher{
+public class  InMemoryJobOfferFetcherTest implements JobOfferFetcher{
     List<OfferResponseDto> listOfOffers;
 
     public InMemoryJobOfferFetcherTest(List<OfferResponseDto> listOfOffers) {
