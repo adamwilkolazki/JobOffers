@@ -1,19 +1,13 @@
 package com.juniorjavajoboffers.domain.joboffer;
 
+import org.springframework.data.mongodb.repository.MongoRepository;
+import org.springframework.stereotype.Repository;
+
 import java.util.List;
 import java.util.Optional;
+@Repository
+public interface JobOfferRepository extends MongoRepository<JobOffer, String> {
 
-public interface JobOfferRepository {
+    boolean existsByOfferUrl(String offerUrl);
 
-    boolean existsByUrl(String offerUrl);
-
-    Optional<JobOffer> findByOfferUrl(String offerUrl);
-
-    JobOffer save(JobOffer jobOffer);
-
-    Optional<JobOffer> findById(String id);
-
-    List<JobOffer> saveAll(List<JobOffer> offers);
-
-    List<JobOffer> findAll();
 }

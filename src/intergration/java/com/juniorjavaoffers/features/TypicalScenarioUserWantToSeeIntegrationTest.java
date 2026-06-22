@@ -2,9 +2,12 @@ package com.juniorjavaoffers.features;
 
 import com.github.tomakehurst.wiremock.client.WireMock;
 import com.juniorjavajoboffers.domain.joboffer.JobOfferFetcher;
+import com.juniorjavajoboffers.domain.joboffer.dto.JobOfferResponseDto;
 import com.juniorjavajoboffers.domain.joboffer.dto.OfferResponseDto;
 import com.juniorjavajoboffers.infrastructure.joboffer.http.JobOfferFetcherWebClient;
+import com.juniorjavajoboffers.infrastructure.joboffer.scheduler.JobOffersScheduler;
 import com.juniorjavaoffers.BaseIntegrationTest;
+import com.juniorjavaoffers.scheduler.JobOfferSchedulerTest;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
@@ -13,12 +16,13 @@ import org.springframework.http.HttpStatus;
 import java.time.Duration;
 import java.util.List;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.awaitility.Awaitility.await;
 
 class TypicalScenarioUserWantToSeeIntegrationTest extends BaseIntegrationTest implements SampleJobOffersResponse {
 
     @Autowired
-    JobOfferFetcher offerFetcher;
+    JobOffersScheduler scheduler;
 
 
 
@@ -31,10 +35,11 @@ class TypicalScenarioUserWantToSeeIntegrationTest extends BaseIntegrationTest im
                 .willReturn(WireMock.aResponse()
                         .withStatus(HttpStatus.OK.value())
                         .withHeader("Content-Type", "application/json")
-                        .withBody(bodyWithZeroOfferJson())));
+                        .withBody(bodyWithFourOffersJson())));
 
 
-        List<OfferResponseDto> offerResponseDto = offerFetcher.fetchJobOffers();
+        List<JobOfferResponseDto> newOffers = scheduler.fetchJobOffers();
+assertThat(newOffers).hasSize(4);
 
 // step 2: scheduler ran 1st time and made GET to external server and system added 0 offers to database
 

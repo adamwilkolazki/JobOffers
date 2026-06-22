@@ -5,6 +5,7 @@ import com.juniorjavajoboffers.domain.joboffer.JobOfferFetcher;
 import com.juniorjavaoffers.BaseIntegrationTest;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
+
 import org.springframework.test.context.bean.override.mockito.MockitoSpyBean;
 
 import java.time.Duration;
@@ -14,7 +15,8 @@ import static org.mockito.Mockito.verify;
 import static org.testcontainers.shaded.org.awaitility.Awaitility.await;
 @SpringBootTest(classes = JobOfferSpringBootApplication.class,properties = "scheduling.enabled=true")
 public class JobOfferSchedulerTest extends BaseIntegrationTest {
-    @MockitoSpyBean //adnotacja potrzebna do użycia metody verify
+
+   @MockitoSpyBean//adnotacja potrzebna do użycia metody verify
     JobOfferFetcher offerFetcher;
 
     @Test
