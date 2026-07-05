@@ -48,7 +48,7 @@ public class BaseIntegrationTest {
     }
 
     @Test
-    public void f() {
+    public void f() throws Exception {
 
 
     }
