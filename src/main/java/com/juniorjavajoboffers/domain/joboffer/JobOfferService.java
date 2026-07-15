@@ -1,12 +1,16 @@
 package com.juniorjavajoboffers.domain.joboffer;
 
+import com.juniorjavajoboffers.domain.joboffer.dto.OfferResponseDto;
+import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.log4j.Log4j2;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @RequiredArgsConstructor
-
+@Log4j2
 class JobOfferService {
 
     private final JobOfferRepository jobOfferRepository;
@@ -31,10 +35,14 @@ class JobOfferService {
     }
 
     private  List<JobOffer>fetchAllJobOffers(){
+
         return jobOfferFetcher.fetchJobOffers()
                 .stream()
                 .map(offerDto -> JobOfferMapper.mapFromOfferResponseToJobOffer(offerDto))
                 .toList();
+
     }
+
+
 
 }

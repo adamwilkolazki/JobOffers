@@ -13,6 +13,7 @@ public class JobOfferFacadeConfiguration {
     JobOfferFacade jobOfferFacade(JobOfferFetcher jobOfferFetcher,JobOfferRepository repository) {
 
         JobOfferService jobOfferService = new JobOfferService(repository,jobOfferFetcher);
+
         return new JobOfferFacade(repository,jobOfferService);
     }
 }

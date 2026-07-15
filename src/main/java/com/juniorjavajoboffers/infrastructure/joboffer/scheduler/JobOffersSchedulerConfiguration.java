@@ -9,4 +9,5 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 @EnableScheduling
 @ConditionalOnProperty(name = "scheduling.enabled", matchIfMissing = false)
 class JobOffersSchedulerConfiguration {
+
 }

@@ -3,6 +3,7 @@ package com.juniorjavajoboffers.infrastructure.joboffer.scheduler;
 import com.juniorjavajoboffers.domain.joboffer.JobOfferFacade;
 import com.juniorjavajoboffers.domain.joboffer.dto.JobOfferResponseDto;
 import lombok.AllArgsConstructor;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
@@ -10,6 +11,7 @@ import java.util.List;
 
 @Component
 @AllArgsConstructor
+@Log4j2
 public class JobOffersScheduler {
 
     private final JobOfferFacade jobOfferFacade;
@@ -17,6 +19,8 @@ public class JobOffersScheduler {
     //@Scheduled(cron = "0 0 /3 * * *")
     @Scheduled(cron = "${offers.fetcher.scheduler.delay}")
     public List<JobOfferResponseDto> fetchJobOffers() {
+
+
         return jobOfferFacade.fetchAllOffersAndSaveIfNotExists();
     }
 }

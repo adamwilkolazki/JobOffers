@@ -1,7 +1,7 @@
 spring:
   data:
     mongodb:
-      uri: mongodb://root:example@localhost:27017/joboffers
+      uri: mongodb://root:example@localhost:27017/joboffers?authSource=admin
   main:
     allow-bean-definition-overriding: true
 offers:
@@ -10,10 +10,10 @@ offers:
       client:
         config: http://ec2-18-194-181-208.eu-central-1.compute.amazonaws.com
         port: 5057
-        connectionTimeout: 3000
-        responseTimeout: 5
+
     scheduler:
       delay: "0 0 */3 * * *"
+#      "0 0 */3 * * *"
 
 
 scheduling:

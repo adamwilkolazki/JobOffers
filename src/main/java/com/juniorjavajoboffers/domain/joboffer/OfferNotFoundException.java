@@ -3,7 +3,7 @@ package com.juniorjavajoboffers.domain.joboffer;
 import lombok.Getter;
 
 @Getter
-class OfferNotFoundException extends RuntimeException {
+public class OfferNotFoundException extends RuntimeException {
     private final String offerId;
 
     public OfferNotFoundException(String offerId) {
