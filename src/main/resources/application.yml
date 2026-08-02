@@ -2,6 +2,7 @@ spring:
   data:
     mongodb:
       uri: mongodb://root:example@localhost:27017/joboffers?authSource=admin
+      auto-index-creation: true
   main:
     allow-bean-definition-overriding: true
 offers:

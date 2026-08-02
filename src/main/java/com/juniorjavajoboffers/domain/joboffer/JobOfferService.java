@@ -19,22 +19,19 @@ class JobOfferService {
     List<JobOffer> fetchAllOffersAndSaveAllIfNotExists() {
         List<JobOffer> jobOffers = fetchAllJobOffers();
         List<JobOffer> jobOffersWithoutDuplicates = filterNotExistingJobOffers(jobOffers);
-        try {
-            return jobOfferRepository.saveAll(jobOffersWithoutDuplicates);
-        } catch (OfferDuplicateException offerDuplicateException) {
-            throw new RuntimeException();
-        }
+
+        return jobOfferRepository.saveAll(jobOffersWithoutDuplicates);
 
     }
 
     private List<JobOffer> filterNotExistingJobOffers(List<JobOffer> jobOffers) {
-       return jobOffers.stream()
+        return jobOffers.stream()
                 .filter(jobOffer -> !jobOffer.offerUrl().isEmpty())
-                .filter(jobOffer-> !jobOfferRepository.existsByOfferUrl(jobOffer.offerUrl()))
+                .filter(jobOffer -> !jobOfferRepository.existsByOfferUrl(jobOffer.offerUrl()))
                 .toList();
     }
 
-    private  List<JobOffer>fetchAllJobOffers(){
+    private List<JobOffer> fetchAllJobOffers() {
 
         return jobOfferFetcher.fetchJobOffers()
                 .stream()
@@ -42,7 +39,6 @@ class JobOfferService {
                 .toList();
 
     }
-
 
 
 }
