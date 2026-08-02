@@ -1,5 +1,6 @@
 package com.juniorjavajoboffers.domain.joboffer;
 
+import org.springframework.dao.DuplicateKeyException;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -38,7 +39,7 @@ public class InMemoryJobOfferRepository implements JobOfferRepository {
     public <S extends JobOffer>S save(S entity) {
         if (database.values()
                 .stream().anyMatch(jobOffer -> jobOffer.offerUrl().equals(entity.offerUrl()))) {
-            throw new OfferDuplicateException("entity already exists in base");
+            throw new DuplicateKeyException("entity already exists in base");
         }
         String id = UUID.randomUUID().toString();
         JobOffer offer = JobOffer.builder()

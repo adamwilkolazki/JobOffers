@@ -41,4 +41,25 @@ public interface SampleJobOffersResponse {
     }]
     """.trim();
     }
+    default String bodyWithTwoOffersJson(){
+        return """
+    [
+    {
+        "title": "Junior Java Developer",
+        "company": "Connectis_",
+        "salary": "14 000 – 17 000 PLN",
+        "offerUrl": "https://nofluffjobs.com/pl/job/junior-java-developer-connectis--warszawa",
+        "source": "nofluffjobs",
+        "salary_estimated": false
+    },
+    {
+        "title": "Junior Java Developer (f/m)",
+        "company": "Netcompany Poland",
+        "salary": "8 000 – 9 000 PLN",
+        "offerUrl": "https://nofluffjobs.com/pl/job/junior-java-developer-f-m-netcompany-poland-warsaw",
+        "source": "nofluffjobs",
+        "salary_estimated": false
+    }]
+    """.trim();
+    }
 }

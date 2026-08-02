@@ -5,6 +5,7 @@ import com.juniorjavajoboffers.domain.joboffer.dto.JobOfferRequestDto;
 import com.juniorjavajoboffers.domain.joboffer.dto.JobOfferResponseDto;
 import com.juniorjavajoboffers.domain.joboffer.dto.OfferResponseDto;
 import org.junit.jupiter.api.Test;
+import org.springframework.dao.DuplicateKeyException;
 
 import java.util.List;
 
@@ -98,7 +99,7 @@ public class JobOfferFacadeTest {
         //when
         Throwable throwable = catchThrowable(() -> jobOfferFacade.saveOffer(new JobOfferRequestDto("company2", "position2", "salary2", "url1")));
         //then
-        assertThat(throwable).isInstanceOf(OfferDuplicateException.class);
+        assertThat(throwable).isInstanceOf(DuplicateKeyException.class);
 
 
     }
