@@ -19,8 +19,8 @@ import java.time.Duration;
 public class JobOfferFetcherClientConfiguration {
 
 
-    @Bean
-    ExchangeFilterFunction errorHandlingFilter() {
+/*    @Bean
+   public ExchangeFilterFunction errorHandlingFilter() {
         return ExchangeFilterFunction.ofResponseProcessor(response ->
         {
             if (response.statusCode().is5xxServerError()) {
@@ -28,13 +28,12 @@ public class JobOfferFetcherClientConfiguration {
             }
             return Mono.just(response);
         });
-    }
+    }*/
 
     @Bean
     WebClient webClient() {
 
         return WebClient.builder()
-                .filter(errorHandlingFilter())
                 .build();
     }
 

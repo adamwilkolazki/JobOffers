@@ -12,6 +12,8 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.ResourceAccessException;
 import org.springframework.web.reactive.function.client.WebClient;
+import org.springframework.web.reactive.function.client.WebClientRequestException;
+import org.springframework.web.reactive.function.client.WebClientResponseException;
 import reactor.core.publisher.Mono;
 
 import java.util.Collections;
@@ -55,9 +57,12 @@ public class JobOfferFetcherWebClient implements JobOfferFetcher {
             }
             log.info("Response body returned: " + body);
             return body;
-        } catch (ResourceAccessException e) {
-            log.error("Error while fetching offers");
-            return Collections.emptyList();
+        } catch (WebClientResponseException e) {
+            throw new JobOfferFetchingException("Offer service returned HTTP error:" + e.getStatusCode(), e);
+        } catch (WebClientRequestException e) {
+
+            throw new JobOfferFetchingException("Cannot connect to offer service", e);
+
         }
     }
 
