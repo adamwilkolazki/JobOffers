@@ -7,6 +7,7 @@ import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.context.annotation.Primary;
 import org.springframework.core.ParameterizedTypeReference;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -14,6 +15,7 @@ import org.springframework.web.client.ResourceAccessException;
 import org.springframework.web.reactive.function.client.WebClient;
 import org.springframework.web.reactive.function.client.WebClientRequestException;
 import org.springframework.web.reactive.function.client.WebClientResponseException;
+import org.springframework.web.server.ResponseStatusException;
 import reactor.core.publisher.Mono;
 
 import java.util.Collections;
@@ -52,15 +54,14 @@ public class JobOfferFetcherWebClient implements JobOfferFetcher {
 
 
             if (body == null) {
-                log.info("Response body was null, returning empty list");
-                return Collections.emptyList();
+                log.error("Response body was null");
+                throw new ResponseStatusException(HttpStatus.NO_CONTENT);
             }
             log.info("Response body returned: " + body);
             return body;
         } catch (WebClientResponseException e) {
-            throw new JobOfferFetchingException("Offer service returned HTTP error:" + e.getStatusCode(), e);
+            throw new JobOfferFetchingException("Offer service returned HTTP error: " + e.getStatusCode(), e);
         } catch (WebClientRequestException e) {
-
             throw new JobOfferFetchingException("Cannot connect to offer service", e);
 
         }
