@@ -7,6 +7,8 @@ import com.juniorjavajoboffers.domain.loginandregister.RegistrationResultDto;
 import org.assertj.core.api.AssertionsForClassTypes;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.catchThrowable;
@@ -43,14 +45,14 @@ public class LoginAndRegisterFacadeTest {
         assertThat(userByUsername.password()).isEqualTo("password");
     }
     @Test
-    public void should_throw_user_not_found_exception_when_user_not_exist_in_database(){
+    public void should_throw_username_not_found_exception_when_user_not_exist_in_database(){
         //given
         String username = "username";
         //when
         Throwable throwable = catchThrowable(()->loginAndRegisterFacade.findUserByUsername(username));
         //then
         AssertionsForClassTypes.assertThat(throwable)
-                .isInstanceOf(UserNotFoundException.class)
+                .isInstanceOf(BadCredentialsException.class)
                 .hasMessage("user not found");
     }
 }

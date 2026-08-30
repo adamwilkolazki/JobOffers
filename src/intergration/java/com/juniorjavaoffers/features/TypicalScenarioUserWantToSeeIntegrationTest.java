@@ -19,6 +19,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -51,8 +52,54 @@ class TypicalScenarioUserWantToSeeIntegrationTest extends BaseIntegrationTest im
 
 
 // step 3: user tried to get JWT token by requesting POST /token with username=someUser, password=somePassword and system returned UNAUTHORIZED(401)
+        //given
+        ResultActions failedJwtTokenRequest = mockMvc.perform(post("/token").content(
+                """
+                        {
+                           "username": "user",
+                           "password": "password"
+                           }
+                        """.trim()).contentType(MediaType.APPLICATION_JSON));
+
+        //when
+        failedJwtTokenRequest
+                .andExpect(status().isUnauthorized())
+                .andExpect(content().json("""
+                {
+                    "badCredentials": "Bad Credentials",
+                    "httpStatus": "UNAUTHORIZED"
+                }
+                """));
+
+
+
+
 // step 4: user made GET /offers with no jwt token and system returned UNAUTHORIZED(401)
-// step 5: user made POST /register with username=someUser, password=somePassword and system registered user with status OK(200)
+
+        //given && when
+        ResultActions performOffersWithNoToken = mockMvc.perform(get("/offers").contentType(MediaType.APPLICATION_JSON));
+
+        //then
+        performOffersWithNoToken.andExpect(status().isUnauthorized());
+
+// step 5: user made POST /register with username=someUser, password=somePassword and system registered user with status CREATED(201)
+
+        //given && when
+
+        ResultActions performRegisterNewUser = mockMvc.perform(post("/register").content(
+                """
+                            {
+                            "username": "username1",
+                            "password": "password1"
+                        }
+                        """.trim()
+        ).contentType(MediaType.APPLICATION_JSON));
+
+        //then
+
+        performRegisterNewUser.andExpect(status().isCreated());
+
+
 // step 6: user tried to get JWT token by requesting POST /token with username=someUser, password=somePassword and system returned OK(200) and jwttoken=AAAA.BBBB.CCC
 // step 7: user made GET /offers with header “Authorization: Bearer AAAA.BBBB.CCC” and system returned OK(200) with 0 offers
         //given
@@ -105,9 +152,9 @@ class TypicalScenarioUserWantToSeeIntegrationTest extends BaseIntegrationTest im
 
         assertAll(
                 () -> assertThat(twoExpectedJobOffers.size()).isEqualTo(2),
-                ()->assertThat(twoExpectedJobOffers).containsExactlyInAnyOrder(
-                        new JobOfferResponseDto(firstExpectedJobOffer.id(),firstExpectedJobOffer.company(),firstExpectedJobOffer.title(),firstExpectedJobOffer.salary(),firstExpectedJobOffer.offerUrl()),
-                        new JobOfferResponseDto(secondExpectedJobOffer.id(),secondExpectedJobOffer.company(),secondExpectedJobOffer.title(),secondExpectedJobOffer.salary(),secondExpectedJobOffer.offerUrl())
+                () -> assertThat(twoExpectedJobOffers).containsExactlyInAnyOrder(
+                        new JobOfferResponseDto(firstExpectedJobOffer.id(), firstExpectedJobOffer.company(), firstExpectedJobOffer.title(), firstExpectedJobOffer.salary(), firstExpectedJobOffer.offerUrl()),
+                        new JobOfferResponseDto(secondExpectedJobOffer.id(), secondExpectedJobOffer.company(), secondExpectedJobOffer.title(), secondExpectedJobOffer.salary(), secondExpectedJobOffer.offerUrl())
                 ));
 
 
@@ -147,10 +194,10 @@ class TypicalScenarioUserWantToSeeIntegrationTest extends BaseIntegrationTest im
                 ));
 // step 14: scheduler ran 3rd time and made GET to external server and system added 2 new offers with ids: 3000 and 4000 to database
 
-    //given && when
+        //given && when
 
         List<JobOfferResponseDto> nextTwoNewOffers = scheduler.fetchJobOffers();
-    //then
+        //then
         assertThat(nextTwoNewOffers.size()).isEqualTo(2);
 
 // step 15: user made GET /offers with header “Authorization: Bearer AAAA.BBBB.CCC” and system returned OK(200) with 4 offers with ids: 1000,2000, 3000 and 4000
@@ -162,12 +209,10 @@ class TypicalScenarioUserWantToSeeIntegrationTest extends BaseIntegrationTest im
         //then
 
         String allJobOffers = performGetAllJobOffers.andExpect(status().isOk()).andReturn().getResponse().getContentAsString();
-       List<JobOfferResponseDto> allOffers = objectMapper.readValue(allJobOffers, new TypeReference<>() {
+        List<JobOfferResponseDto> allOffers = objectMapper.readValue(allJobOffers, new TypeReference<>() {
         });
         System.out.println(allOffers.size());
-       assertThat(allOffers).hasSize(4);
-
-
+        assertThat(allOffers).hasSize(4);
 
 
 //step 16:  user made POST /offers/save and offer as body and system returned 201 (CREATED)

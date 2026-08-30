@@ -2,8 +2,12 @@ package com.juniorjavajoboffers.domain.loginandregister;
 
 
 import lombok.AllArgsConstructor;
+import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.stereotype.Component;
 
 @AllArgsConstructor
+@Component
 public class LoginAndRegisterFacade {
 private static final String USER_NOT_FOUND = "user not found";
 
@@ -21,7 +25,7 @@ private static final String USER_NOT_FOUND = "user not found";
     public UserDto findUserByUsername(String username){
         return repository.findUserByUsername(username)
                 .map(user -> new UserDto(user.id(),user.username(),user.password()))
-                .orElseThrow(()-> new UserNotFoundException(USER_NOT_FOUND));
+                .orElseThrow(()-> new BadCredentialsException(USER_NOT_FOUND));
      }
 
 }
