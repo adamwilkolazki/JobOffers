@@ -15,12 +15,15 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 
 @Configuration
 @AllArgsConstructor
 public class SecurityConfiguration {
 
     private final LoginAndRegisterFacade loginAndRegisterFacade;
+    private final JwtAuthorizationFilter jwtAuthorizationFilter;
 
     @Bean
     AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws Exception {
@@ -38,14 +41,15 @@ public class SecurityConfiguration {
         return httpSecurity.csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/swagger-ui/**").permitAll()
-                        .requestMatchers("/v3/api-docs").permitAll()
-                        .requestMatchers("/webjars/**").permitAll()
-                        .requestMatchers("/token/**").permitAll()
-                        .requestMatchers("/register/**").permitAll()
-                        .requestMatchers("/swagger-resources/**").permitAll()
-                        .anyRequest().authenticated()
+                                .requestMatchers("/v3/api-docs/**").permitAll()
+                                .requestMatchers("/webjars/**").permitAll()
+                                .requestMatchers("/token/**").permitAll()
+                                .requestMatchers("/register/**").permitAll()
+                                .requestMatchers("/swagger-resources/**").permitAll()
+                                .anyRequest().authenticated()
                 )
                 .sessionManagement(sess -> sess.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                .addFilterBefore(jwtAuthorizationFilter, UsernamePasswordAuthenticationFilter.class)
                 .httpBasic(Customizer.withDefaults())
                 .build();
 

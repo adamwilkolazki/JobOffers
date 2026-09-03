@@ -19,3 +19,8 @@ offers:
 
 scheduling:
   enabled: true
+
+jwt:
+  secret: ${JWT_SECRET}
+  expiration-days: 30
+  issuer:
